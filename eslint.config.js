@@ -7,6 +7,19 @@ module.exports = defineConfig([
 	expoConfig,
 	eslintPluginPrettierRecommended,
 	{
-		ignores: ['dist/*']
+		settings: {
+			'import/resolver': {
+				typescript: {
+					project: './jsconfig.json',
+					alwaysTryTypes: true
+				}
+			}
+		},
+		rules: {
+			'import/no-unresolved': 'error'
+		}
+	},
+	{
+		ignores: ['dist/*', 'node_modules/*', '.expo/*']
 	}
 ])

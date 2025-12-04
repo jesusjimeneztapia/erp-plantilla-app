@@ -76,3 +76,56 @@ npm run lint:fix
 # o
 npx expo lint --fix
 ```
+
+## Agregar Path Alias
+
+1. Instalar paquete para resolver los path alias:
+
+```bash
+npm i eslint-import-resolver-typescript -D -E
+```
+
+2. Crear el archivo `jsconfig.json`, en la raíz del proyecto:
+
+```json
+{
+	"compilerOptions": {
+		"baseUrl": "./src",
+		"paths": {
+			"@screens/*": ["screens/*"]
+		}
+	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules", "dist", ".expo"]
+}
+```
+
+3. Editar el archivo `eslint.config.js`:
+
+```js
+// https://docs.expo.dev/guides/using-eslint/
+const { defineConfig } = require('eslint/config')
+const expoConfig = require('eslint-config-expo/flat')
+const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended')
+
+module.exports = defineConfig([
+	expoConfig,
+	eslintPluginPrettierRecommended,
+	{
+		settings: {
+			'import/resolver': {
+				typescript: {
+					project: './jsconfig.json',
+					alwaysTryTypes: true
+				}
+			}
+		},
+		rules: {
+			'import/no-unresolved': 'error'
+		}
+	},
+	{
+		ignores: ['dist/*', 'node_modules/*', '.expo/*']
+	}
+])
+```

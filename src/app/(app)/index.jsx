@@ -1,5 +1,5 @@
 import HomeScreen from '@screens/HomeScreen'
 
-export default function AppIndex() {
+export default function DrawerIndex() {
 	return <HomeScreen />
 }

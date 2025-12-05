@@ -1,10 +1,13 @@
+import { useAuthStore } from '@store/auth.store'
 import { StyleSheet, Text, View } from 'react-native'
 
 export default function HomeScreen() {
+	const user = useAuthStore((state) => state.user)
+
 	return (
 		<View style={styles.container}>
 			<Text style={styles.text}>
-				Open up <Text style={styles.accent}>src/app/index.jsx</Text> to start working on your app!
+				Bienvenid@ <Text style={styles.accent}>{user.name}</Text>!
 			</Text>
 		</View>
 	)

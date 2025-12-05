@@ -1,8 +1,14 @@
 {
 	"compilerOptions": {
-		"baseUrl": "./src",
+		"baseUrl": ".",
 		"paths": {
-			"@screens/*": ["screens/*"]
+			"@assets/*": ["assets/*"],
+			"@components/*": ["src/components/*"],
+			"@config/*": ["src/config/*"],
+			"@icons/*": ["src/icons/*"],
+			"@screens/*": ["src/screens/*"],
+			"@services/*": ["src/services/*"],
+			"@store/*": ["src/store/*"]
 		}
 	},
 	"include": ["src/**/*"],

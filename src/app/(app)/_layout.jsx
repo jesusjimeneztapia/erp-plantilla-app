@@ -4,34 +4,43 @@ import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawe
 import { useAuthStore } from '@store/auth.store'
 import { Drawer } from 'expo-router/drawer'
 import { Pressable, Text, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 function CustomDrawerContent(props) {
 	const user = useAuthStore((state) => state.user)
 	const unauthenticate = useAuthStore((state) => state.unauthenticate)
 
+	const { top, bottom } = useSafeAreaInsets()
+
 	return (
-		<DrawerContentScrollView {...props}>
-			<View style={{ rowGap: 2, marginBottom: 16 }}>
+		<View style={{ flex: 1 }}>
+			<View style={{ rowGap: 2, marginBottom: 8, paddingTop: top, paddingHorizontal: 16 }}>
 				<Text style={{ color: '#344054', fontSize: 14, fontWeight: 'bold' }}>{user.name}</Text>
 				<Text style={{ color: '#667085', fontSize: 12 }}>{user.email}</Text>
 			</View>
-
-			<DrawerItemList {...props} />
-
-			<Pressable
-				style={{
-					paddingHorizontal: 16,
-					paddingVertical: 12,
-					marginTop: 12,
-					backgroundColor: '#f43f5e',
-					alignItems: 'center',
-					borderRadius: 4
-				}}
-				onPress={unauthenticate}
+			<DrawerContentScrollView
+				{...props}
+				contentContainerStyle={{ paddingTop: 8, paddingBottom: 8 }}
 			>
-				<Text style={{ color: 'white', fontWeight: 'medium', fontSize: 14 }}>Cerrar sesión</Text>
-			</Pressable>
-		</DrawerContentScrollView>
+				<DrawerItemList {...props} />
+			</DrawerContentScrollView>
+
+			<View style={{ paddingHorizontal: 16, paddingBottom: bottom }}>
+				<Pressable
+					style={{
+						paddingHorizontal: 16,
+						paddingVertical: 12,
+						marginTop: 8,
+						backgroundColor: '#f43f5e',
+						alignItems: 'center',
+						borderRadius: 4
+					}}
+					onPress={unauthenticate}
+				>
+					<Text style={{ color: 'white', fontWeight: 'medium', fontSize: 14 }}>Cerrar sesión</Text>
+				</Pressable>
+			</View>
+		</View>
 	)
 }
 

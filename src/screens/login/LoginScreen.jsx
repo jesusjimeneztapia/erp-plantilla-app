@@ -1,11 +1,10 @@
-import Input from '@components/form/input/Input'
-import Label from '@components/form/Label'
 import LockCloseIcon from '@icons/LockCloseIcon'
 import PersonIcon from '@icons/PersonIcon'
 import { Text, StyleSheet, View, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import useLogin from './hooks/useLogin'
 import { Controller } from 'react-hook-form'
+import AnimatedInput from '@components/form/input/AnimatedInput'
 
 export default function LoginScreen() {
 	const { control, errors, isSubmitting, onSubmit } = useLogin()
@@ -22,47 +21,42 @@ export default function LoginScreen() {
 					</View>
 
 					<View style={styles.fields}>
-						<View>
-							<Label>
-								Correo electrónico <Text style={styles.required}>*</Text>
-							</Label>
-							<Controller
-								control={control}
-								name="email"
-								render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-									<Input
-										placeholder="info@gmail.com"
-										icon={PersonIcon}
-										onChange={onChange}
-										onBlur={onBlur}
-										value={value}
-										hint={error?.message}
-										error={!!error}
-									/>
-								)}
-							/>
-						</View>
-						<View>
-							<Label>
-								Contraseña <Text style={styles.required}>*</Text>
-							</Label>
-							<Controller
-								control={control}
-								name="password"
-								render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-									<Input
-										placeholder="Ingresa tu contraseña"
-										icon={LockCloseIcon}
-										onChange={onChange}
-										onBlur={onBlur}
-										value={value}
-										hint={error?.message}
-										error={!!error}
-										secureTextEntry
-									/>
-								)}
-							/>
-						</View>
+						<Controller
+							control={control}
+							name="email"
+							render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+								<AnimatedInput
+									label="Correo electrónico"
+									iconLeft={PersonIcon}
+									placeholder="Ingrese su correo electrónico"
+									value={value}
+									onChangeText={onChange}
+									onBlur={onBlur}
+									hint={error?.message}
+									error={!!error}
+									required
+								/>
+							)}
+						/>
+
+						<Controller
+							control={control}
+							name="password"
+							render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+								<AnimatedInput
+									label="Contraseña"
+									iconLeft={LockCloseIcon}
+									placeholder="Ingrese su contraseña"
+									value={value}
+									onChangeText={onChange}
+									onBlur={onBlur}
+									hint={error?.message}
+									error={!!error}
+									required
+									secureTextEntry
+								/>
+							)}
+						/>
 
 						<Pressable
 							style={[

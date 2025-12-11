@@ -1,6 +1,6 @@
 import EyeIcon from '@icons/EyeIcon'
 import EyeOffIcon from '@icons/EyeOffIcon'
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Animated from 'react-native-reanimated'
 import useAnimatedInput from './useAnimatedInput'
 
@@ -10,11 +10,15 @@ export default function AnimatedInput({
 	placeholder,
 	value: valueClient,
 	onChangeText,
+	onFocus: onFocusClient,
 	onBlur: onBlurClient,
 	secureTextEntry,
 	hint,
 	required,
-	error
+	error,
+	dismissOnFocus,
+	numberOfLines,
+	multiline
 }) {
 	const {
 		animatedLabelContainerStyle,
@@ -29,9 +33,11 @@ export default function AnimatedInput({
 	} = useAnimatedInput({
 		value: valueClient,
 		error,
+		onFocus: onFocusClient,
 		onBlur: onBlurClient,
 		onChangeText,
-		secureTextEntry
+		secureTextEntry,
+		dismissOnFocus
 	})
 
 	return (
@@ -53,22 +59,32 @@ export default function AnimatedInput({
 			)}
 
 			<View style={[styles.inputContainer]}>
-				<TextInput
-					style={[
-						styles.input,
-						error ? styles.inputError : {},
-						isFocused ? (error ? styles.inputErrorFocused : styles.inputFocused) : {},
-						IconLeft ? styles.inputPaddingLeft : {},
-						secureTextEntry ? styles.inputPaddingRight : {}
-					]}
-					placeholder={isFocused ? placeholder : ''}
-					placeholderTextColor="rgba(17, 24, 39, .25)"
-					onFocus={onFocus}
-					onBlur={onBlur}
-					value={value}
-					onChangeText={handleChangeText}
-					secureTextEntry={hideText}
-				/>
+				<TouchableOpacity
+					onPress={() => (dismissOnFocus ? (isFocused ? onBlur() : onFocus()) : {})}
+				>
+					<TextInput
+						style={[
+							styles.input,
+							error ? styles.inputError : {},
+							isFocused ? (error ? styles.inputErrorFocused : styles.inputFocused) : {},
+							IconLeft ? styles.inputPaddingLeft : {},
+							secureTextEntry ? styles.inputPaddingRight : {},
+							numberOfLines > 1
+								? { height: 24 + 18 * numberOfLines - numberOfLines + 2, textAlignVertical: 'top' }
+								: {}
+						]}
+						placeholder={isFocused ? placeholder : ''}
+						placeholderTextColor="rgba(17, 24, 39, .25)"
+						onFocus={onFocus}
+						onBlur={onBlur}
+						value={value}
+						onChangeText={handleChangeText}
+						secureTextEntry={hideText}
+						editable={!dismissOnFocus}
+						numberOfLines={numberOfLines}
+						multiline={multiline || numberOfLines > 1}
+					/>
+				</TouchableOpacity>
 				{IconLeft && (
 					<IconLeft
 						style={[styles.icon, styles.iconLeft]}

@@ -12,9 +12,11 @@ const DURATION = 150
 export default function useAnimatedInput({
 	value: valueClient,
 	onChangeText,
+	onFocus: onFocusClient,
 	onBlur: onBlurClient,
 	secureTextEntry,
-	error
+	error,
+	dismissOnFocus
 }) {
 	const [isFocused, setIsFocused] = useState(false)
 	const [hideText, setHideText] = useState(!!secureTextEntry)
@@ -59,7 +61,12 @@ export default function useAnimatedInput({
 				: interpolateColor(progressLabel.value, [0, 1], ['#6b7280', error ? '#f43f5e' : '#3b82f6'])
 	}))
 
-	const onFocus = () => setIsFocused(true)
+	const onFocus = () => {
+		if (!dismissOnFocus) {
+			setIsFocused(true)
+		}
+		onFocusClient?.()
+	}
 	const onBlur = () => {
 		setIsFocused(false)
 		onBlurClient?.()
